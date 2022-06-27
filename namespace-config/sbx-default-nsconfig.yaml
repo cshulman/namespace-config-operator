@@ -1,0 +1,19 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: NamespaceConfig
+metadata:
+  name: sbx-default-namespace
+spec:
+  labelSelector:
+    matchLabels:
+       mycom.io/project-access: developer-requested-ns
+  templates:
+  - objectTemplate: |
+      apiVersion: v1
+      kind: ResourceQuota
+      metadata:
+        name: sbx-storage-consumption
+        namespace: {{ .Name }}
+      spec:
+        hard:
+          persistentvolumeclaims: "10"
+          requests.storage: "500Gi"
